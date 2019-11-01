@@ -9,16 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.exerciciofilme.R;
+import com.example.exerciciofilme.model.Filme;
 import com.example.exerciciofilme.model.Result;
+import com.example.exerciciofilme.view.interfaces.FilmeOnClick;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class FilmeAdapter extends RecyclerView.Adapter<FilmeAdapter.ViewHolder> {
     private List<Result> listaDeFilmes;
+    private FilmeOnClick listener;
 
-    public FilmeAdapter(List<Result> listaDeFilmes) {
+    public FilmeAdapter(List<Result> listaDeFilmes, FilmeOnClick listener) {
         this.listaDeFilmes = listaDeFilmes;
+        this.listener = listener;
     }
 
     @NonNull
@@ -32,6 +36,10 @@ public class FilmeAdapter extends RecyclerView.Adapter<FilmeAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Result result = listaDeFilmes.get(position);
         holder.onBind(result);
+
+        holder.itemView.setOnClickListener(view ->{
+            listener.OnClick(result);
+        });
     }
 
     @Override

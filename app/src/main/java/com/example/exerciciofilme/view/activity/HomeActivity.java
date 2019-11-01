@@ -5,17 +5,19 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.exerciciofilme.R;
 import com.example.exerciciofilme.model.Result;
 import com.example.exerciciofilme.view.adapter.FilmeAdapter;
+import com.example.exerciciofilme.view.interfaces.FilmeOnClick;
 import com.example.exerciciofilme.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements FilmeOnClick {
     private RecyclerView recyclerView;
     private FilmeAdapter adapter;
     private List<Result> listaDeFilmes = new ArrayList<>();
@@ -42,7 +44,16 @@ public class HomeActivity extends AppCompatActivity {
 
     public void initViews(){
         recyclerView = findViewById(R.id.recyclerFilmes);
-        adapter = new FilmeAdapter(listaDeFilmes);
+        adapter = new FilmeAdapter(listaDeFilmes, this);
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+    }
+
+    @Override
+    public void OnClick(Result result) {
+        Intent intent = new Intent(this, DetalheFilmeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("filme", result);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
